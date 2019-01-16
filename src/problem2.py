@@ -3,8 +3,8 @@ Exam 2, problem 2.
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and John Neill.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import math
 import time
@@ -13,7 +13,7 @@ import testing_helper
 
 
 ###############################################################################
-# TODO: 2.  READ the   Point   class defined below.
+# DONE: 2.  READ the   Point   class defined below.
 #  Note especially its methods:
 #    clone
 #    distance_from
@@ -87,12 +87,12 @@ def main():
     print('Un-comment the calls in MAIN one by one')
     print(' to run the testing code as you complete the TODOs.')
 
-    # run_test_init()
-    # run_test_area()
-    # run_test_bigger_triangle()
-    # run_test_shrink_or_expand()
-    # run_test_return_doubled_triangle()
-    # run_test_get_largest_area()
+    #run_test_init()
+    #run_test_area()
+    #run_test_bigger_triangle()
+    #run_test_shrink_or_expand()
+    #run_test_return_doubled_triangle()
+    run_test_get_largest_area()
 
 
 ###############################################################################
@@ -102,6 +102,12 @@ class Triangle(object):
     """ Represents a triangle in 2-dimensional space. """
 
     def __init__(self, a, b, c):
+
+        self.a = a.clone()
+        self.b = b.clone()
+        self.c = c.clone()
+        self.history = []
+
         """
         What comes in:
           -- self and three Point objects
@@ -138,7 +144,7 @@ class Triangle(object):
           :type c: Point
         """
         # ---------------------------------------------------------------------
-        # TODO: 2.
+        # DONE: 2.
         #   a. READ the above specification, including the Example.
         #        ** ASK QUESTIONS AS NEEDED. **
         #        ** Be sure you understand it, ESPECIALLY the Example.
@@ -148,6 +154,14 @@ class Triangle(object):
         # ---------------------------------------------------------------------
 
     def area(self):
+
+        l1 = math.sqrt((self.a.x - self.b.x)**2 + (self.a.y - self.b.y)**2)
+        l2 = math.sqrt((self.b.x - self.c.x)**2 + (self.b.y - self.c.y)**2)
+        l3 = math.sqrt((self.c.x - self.a.x)**2 + (self.c.y - self.a.y)**2)
+        perimeter = l1 + l2 + l3
+        s = perimeter / 2
+        area = math.sqrt(s * (s - l1) * (s - l2) * (s - l3))
+        return area
         """
         What comes in:
           -- self
@@ -155,8 +169,7 @@ class Triangle(object):
         Side effects: None.
 
         HINT #1: Recall Heron's formula for the area of a triangle:
-        Area =   square root of (S
-                                 * (S - length of side 1)
+        Area =   square root of (S * (S - length of side 1)
                                  * (S - length of side 2)
                                  * (S - length of side 3))
 
@@ -178,7 +191,7 @@ class Triangle(object):
           :rtype: float
         """
         # ---------------------------------------------------------------------
-        # TODO: 3.
+        # DONE: 3.
         #   a. READ the above specification, including the Example AND HINT!
         #        ** ASK QUESTIONS AS NEEDED. **
         #        ** Be sure you understand it, ESPECIALLY the Example.
@@ -188,6 +201,15 @@ class Triangle(object):
         # ---------------------------------------------------------------------
 
     def bigger_triangle(self, triangle2):
+
+        a1 = self.area()
+        a2 = triangle2.area()
+
+        if a1 > a2:
+            return True
+        else:
+            return False
+
         """
         What comes in:
           -- self
@@ -201,7 +223,7 @@ class Triangle(object):
           :rtype: bool
         """
         # ---------------------------------------------------------------------
-        # TODO 4:
+        # DONE 4:
         #   a. READ the above specification, including the Example.
         #        ** ASK QUESTIONS AS NEEDED. **
         #        ** Be sure you understand it, ESPECIALLY the Example.
@@ -211,6 +233,18 @@ class Triangle(object):
         # ---------------------------------------------------------------------
 
     def shrink_or_expand(self, f):
+
+        self.a.x = self.a.x * f
+        self.a.y = self.a.y * f
+        self.b.x = self.b.x * f
+        self.b.y = self.b.y * f
+        self.c.x = self.c.x * f
+        self.c.y = self.c.y * f
+        a = self.area()
+        print (a)
+
+        self.history += [a]
+
         """
          What comes in:
            -- self
@@ -224,7 +258,7 @@ class Triangle(object):
            :type: f: float
         """
         # ---------------------------------------------------------------------
-        # TODO 8:
+        # DONE 8:
         #   a. READ the above specification, including the Example.
         #        ** ASK QUESTIONS AS NEEDED. **
         #        ** Be sure you understand it, ESPECIALLY the Example.
@@ -234,6 +268,11 @@ class Triangle(object):
         # ---------------------------------------------------------------------
 
     def return_doubled_triangle(self):
+
+        triangle = Triangle(self.a, self.b, self.c)
+        triangle.shrink_or_expand(2)
+        return triangle
+
         """
         What comes in:
           -- self
@@ -247,7 +286,7 @@ class Triangle(object):
           :rtype: Triangle:
         """
         # -------------------------------------------------------------------------
-        # TODO: 9
+        # DONE: 9
         #   a. READ the above specification, including the Example.
         #        ** ASK QUESTIONS AS NEEDED. **
         #        ** Be sure you understand it, ESPECIALLY the Example.
@@ -257,6 +296,18 @@ class Triangle(object):
         # -------------------------------------------------------------------------
 
     def get_largest_area(self):
+
+        i = 0
+
+        for k in range(1, len(self.history)):
+            g = k
+            h = k - 1
+            if self.history[g] > self.history[h]:
+                i = self.history[g]
+            if self.history[h] > self.history[g]:
+                i = self.history[h]
+        return i
+
         """
         What comes in:
           -- self
