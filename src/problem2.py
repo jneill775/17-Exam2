@@ -241,7 +241,6 @@ class Triangle(object):
         self.c.x = self.c.x * f
         self.c.y = self.c.y * f
         a = self.area()
-        print (a)
 
         self.history += [a]
 
